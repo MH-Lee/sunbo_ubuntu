@@ -10,14 +10,14 @@ from information.api.serializers import (
 from utils.paginations import StandardResultPagination
 
 class DartAPIView(generics.ListAPIView):
-    queryset = Dart.objects.all().order_by('date')
+    queryset = Dart.objects.all().order_by('-date')
     serializer_class = DartSerializer
     permission_classes = (permissions.AllowAny,)
     pagination_class = StandardResultPagination
     filter_backends = [SearchFilter, OrderingFilter]
 
     def get_queryset(self, *args, **kwargs):
-        queryset = Dart.objects.all()
+        queryset = Dart.objects.all().order_by('-date')
         date_by = self.request.GET.get('date')
         ticker_by = self.request.GET.get('ticker')
         name_by = self.request.GET.get('company_name')
@@ -30,14 +30,14 @@ class DartAPIView(generics.ListAPIView):
         return queryset
 
 class RescueAPIView(generics.ListAPIView):
-    queryset = Rescue.objects.all().order_by('date')
+    queryset = Rescue.objects.all().order_by('-date')
     serializer_class = RescueSerializer
     permission_classes = (permissions.AllowAny,)
     pagination_class = StandardResultPagination
     filter_backends = [SearchFilter, OrderingFilter]
 
     def get_queryset(self, *args, **kwargs):
-        queryset = Rescue.objects.all()
+        queryset = Rescue.objects.all().order_by('-date')
         date_by = self.request.GET.get('date')
         start_date_by = self.request.GET.get('start_date')
         case_num_by = self.request.GET.get('case_num')
