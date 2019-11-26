@@ -1,0 +1,116 @@
+body {
+    font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 700;
+  }
+
+a {
+  text-decoration: none; /* no underline */
+}
+
+  .bg-light {
+    background-color: #ffffff!important;
+    }
+  .container {
+      max-width: 1400px;
+  }
+  .navbar {
+    border-bottom: 1px solid #e3e3e3;
+  }
+  #navbarText > ul {
+    margin-left: 3rem;
+    border-bottom: 1px #ffffff;
+  }
+  #navbarText > ul > li{
+    font-size: 13pt;
+    padding: 0 0.7rem;
+  }
+
+  .navbar-light .navbar-nav .nav-link {
+    color: #005be2;
+  }
+  .navbar-light .navbar-nav .nav-link:hover {
+    color: #82b1f8;
+  }
+  .navbar-brand {
+   font-size: 20pt;
+   font-weight: bold;
+   margin-right: 4rem;
+   
+  }
+
+  .btn {
+    padding: .5rem 1rem;
+    font-size: 13pt;
+    background-color: #005be2;
+    border-color: #005be2;
+  }
+  .btn-signup {
+    color: #005be2;
+    background-color: #fff;
+    border-color: #005be2;
+}
+  .features-icons {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+  
+  .features-icons .row {
+    margin-right: 90px;
+    margin-left: 90px;
+  }
+  .features-icons .features-icons-item {
+    max-width: 25rem;
+  }
+  
+  .features-icons .features-icons-item .features-icons-icon {
+    height: 7rem;
+  }
+  
+  .features-icons .features-icons-item .features-icons-icon i {
+    font-size: 4.5rem;
+  }
+  
+  .features-icons .features-icons-item:hover .features-icons-icon i {
+    font-size: 5rem;
+  }
+
+  footer.footer {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+
+  @media (max-width: 768px) {
+    #navbarText > ul {
+      margin-left: 0;
+      text-align: center;
+    }
+    ul > li {
+      font-size: 13pt;
+      padding: 0;
+    }
+    .navbar-light .navbar-nav .nav-link {
+      color: #005be2;
+    }
+    .navbar-light .navbar-nav .nav-link:hover {
+      color: #fff;
+    }
+    ul > li:hover {
+      color: #fff;
+      background-color: #005be2;
+      border-color: #005be2;
+      margin: 0 1rem;
+    }
+    li.nav-item.dropdown.show > div {
+      text-align: center;
+    }
+  }

@@ -1,0 +1,126 @@
+{% extends "dealflowbox/_base.html" %}
+{% block title %}Deal Flow Box
+<a class="btn btn-primary"
+  href="https://docs.google.com/forms/d/e/1FAIpQLSf1Tc_QTzrZyyB-43lX4byD0dZbmQJ7yqteeKls01wm7TfTqg/viewform"
+  role="button">
+  Add deal info
+</a>
+<button type="submit" class="btn btn-primary" onclick="location.href='/dealflowbox/update'">업데이트</button>
+
+{% endblock %}
+{% block search %}
+<form class="form-inline my-2 my-lg-0 justify-content-end"  method="GET" action="{% url 'dfb_list' %}">
+  {% csrf_token %}
+  <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search">
+  <button class="btn btn-primary" type="submit">search</button>
+</form>
+{% endblock %}
+{% block table %}
+<div class="row mt-5">
+  <div class="table-div">
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th class="center">Date
+            {% if direction == 'asc' %}
+            <a id href="?order_by=date&direction=desc"><i class="fa fa-fw fa-sort"></i></a>
+            {% else %}
+            <a id href="?order_by=date&direction=asc"><i class="fa fa-fw fa-sort"></i></a>
+            {% endif %}
+          </th>
+          <th class="sm-col">회사이름
+            {% if direction == 'asc' %}
+            <a id href="?order_by=company_name&direction=desc"><i class="fa fa-fw fa-sort"></i></a>
+            {% else %}
+            <a id href="?order_by=company_name&direction=asc"><i class="fa fa-fw fa-sort"></i></a>
+            {% endif %}
+          </th>
+          <th class="sm-col">회사업종
+            {% if direction == 'asc' %}
+            <a id href="?order_by=sector&direction=desc"><i class="fa fa-fw fa-sort"></i></a>
+            {% else %}
+            <a id href="?order_by=sector&direction=asc"><i class="fa fa-fw fa-sort"></i></a>
+            {% endif %}
+          </th>
+          <th class="other">사업개요
+            <i class="fa fa-fw fa-sort"></i>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for dfb in dfb_infos %}
+        <tr>
+          <td class="center">{{ dfb.date }}</td>
+          {% if dfb.file_url == 'None' %}
+          <td class="center">{{ dfb.company_name }}</td>
+          {% else %}
+          <td class="center"><a href="{{ dfb.file_url }}">{{ dfb.company_name }}</a></td>
+          {% endif %}
+          <td class="sm-col">{{ dfb.sector }}</td>
+          <td>{{ dfb.business_detail }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row mt-2">
+  <div class="col-12">
+    <nav>
+      <ul class="pagination justify-content-center">
+        {% if dfb_infos.has_previous %}
+        <li class="page-item">
+          {% if order_by != None %}
+          <a class="page-link" href="?p=1&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">처음으로</a>
+          {% else %}
+          <a class="page-link" href="?p=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">처음으로</a>
+          {% endif %}
+        </li>
+        <li class="page-item">
+          {% if order_by != None %}
+          <a class="page-link" href="?p={{ dfb_infos.previous_page_number }}&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">이전으로</a>
+          {% else %}
+          <a class="page-link" href="?p={{ dfb_infos.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">이전으로</a>
+          {% endif %}
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link " href="#">처음으로</a>
+        </li>
+        <li class="page-item disabled">
+          <a class="page-link" href="#">이전으로</a>
+        </li>
+        {% endif %}
+        <li class="page-item active">
+          <a class="page-link" href="#">{{ dfb_infos.number }} / {{ dfb_infos.paginator.num_pages }}</a>
+        </li>
+        {% if dfb_infos.has_next %}
+        <li class="page-item">
+          {% if order_by != None %}
+          <a class="page-link" href="?p={{ dfb_infos.next_page_number }}&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">다음으로</a>
+          {% else %}
+          <a class="page-link" href="?p={{ dfb_infos.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">다음으로</a>
+          {% endif %}
+        </li>
+        <li class="page-item">
+          {% if order_by != None %}
+          <a class="page-link" href="?p={{ dfb_infos.paginator.num_pages }}&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">마지막으로</a>
+          {% else %}
+          <a class="page-link" href="?p={{ dfb_infos.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">마지막으로</a>
+          {% endif %}
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link disabled" href="#">다음으로</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" href="#">마지막으로</a>
+        </li>
+        {% endif %}
+
+      </ul>
+
+    </nav>
+  </div>
+</div>
+{% endblock %}

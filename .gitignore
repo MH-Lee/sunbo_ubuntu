@@ -1,0 +1,13 @@
+__pycache__/
+migrations/
+data/
+db.sqlite3
+investanalytics-79366f3c1873.json
+recommender/models/
+venv.bat
+secrets.json
+static-dist/
+news/task_module/nlp_material/
+information/task_module/chromedriver.exe
+news/task_module/backup_data/
+information/task_module/backup/

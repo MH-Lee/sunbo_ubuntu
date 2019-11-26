@@ -1,0 +1,16 @@
+{% extends "information/_base.html" %}
+{% load static from staticfiles %} 
+{% block css %}
+<link href="{% static 'css/tables.css' %}" rel="stylesheet">
+<link href="{% static 'css/rescue_detail.css' %}" rel="stylesheet">
+{% endblock %}
+{% block title %}{{ rescue.subject }}{% endblock %}
+
+{% block table %}
+<div class="col-md-12 justify-content-center">
+    작성일:&nbsp; {{ rescue.registered_dttm|date:"Y-m-d H:i" }}
+</div>  
+<div class="col-md-12">
+    {{ rescue.contents|safe }}
+</div>  
+{% endblock %}

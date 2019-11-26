@@ -1,0 +1,54 @@
+{% extends "../index.html" %}
+{% load static from staticfiles %}    
+{% block css %}
+<link href="{% static 'css/tables.css' %}" rel="stylesheet">
+<link href="{% static 'css/project.css' %}" rel="stylesheet">
+<!-- <link href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css" rel="stylesheet"> -->
+{% block subcss %}
+{% endblock %}
+{% endblock %}
+
+
+{% block content %}
+<div class="flex-container-1">
+    <header class="masthead text-white text-center">
+        <div class="overlay"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-9 mx-auto">
+                        <h1 class="mb-5">Machine Learning 기반 스타트업 추천 시스템</h1>
+                    </div>
+                </div>
+            </div>
+    </header>
+</div>
+
+<div class='flex-container-2'>
+
+    <div class="flex-nav">
+        <div class="side-menu-name">
+            <h4>Information</h4>
+        </div>
+        <div class="menu-nav">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="/project/introduction/">소개</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/project/network/">스타트업 네트워크</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/project/recommender/">추천시스템<small> &nbsp; <i>beta</i></small></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="flex-table">
+        <div class="subtitle">
+            <h1>{% block title %}{% endblock %}</h1>
+        </div>
+        {% block subcontent %}
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}

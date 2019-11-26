@@ -1,0 +1,191 @@
+{% extends "information/_base.html" %}
+{% block title %}회생법원 신청리스트  &nbsp; 
+{% if request.user.is_superuser %}
+  <button type="submit" class="btn btn-primary" onclick="location.href='/information/rescue_update'">업데이트</button>
+{% else %}
+{% endif %}
+&nbsp; 
+
+{% if user.subscription %}
+  <button type="submit" class="btn btn-primary" onclick="location.href='/information/api/rescue/'">API 보기</button>
+{% else %}
+{% endif %}
+
+{% endblock %}
+{% block search %}
+<form class="form-inline my-2 my-lg-0 justify-content-end"  method="GET" action="{% url 'rescue_list' %}">
+  {% csrf_token %}
+  <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search">
+  <button class="btn btn-primary" type="submit">search</button>
+</form>
+{% endblock %}
+{% block table %}
+<div class="row mt-5">
+  <div>
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th class="center">법원
+            {% if direction == 'asc' %}
+            <a id href="?order_by=area&direction=desc"><i class="fa fa-fw fa-sort"></i></a>
+            {% else %}
+            <a id href="?order_by=area&direction=asc"><i class="fa fa-fw fa-sort"></i></a>
+            {% endif %}
+          </th>
+          <th class="center">사건번호
+            {% if direction == 'asc' %}
+            <a id href="?order_by=case_num&direction=desc"><i class="fa fa-fw fa-sort"></i></a>
+            {% else %}
+            <a id href="?order_by=case_num&direction=asc"><i class="fa fa-fw fa-sort"></i></a>
+            {% endif %}
+          </th>
+          <th class="center">회사이름
+            {% if direction == 'asc' %}
+            <a id href="?order_by=company_name&direction=desc"><i class="fa fa-fw fa-sort"></i></a>
+            {% else %}
+            <a id href="?order_by=company_name&direction=asc"><i class="fa fa-fw fa-sort"></i></a>
+            {% endif %}
+          </th>
+          <th class="center">공시일자
+            {% if direction == 'asc' %}
+            <a id href="?order_by=date&direction=desc"><i class="fa fa-fw fa-sort"></i></a>
+            {% else %}
+            <a id href="?order_by=date&direction=asc"><i class="fa fa-fw fa-sort"></i></a>
+            {% endif %}
+          </th>
+          <th>제목
+            {% if direction == 'asc' %}
+            <a id href="?order_by=subject&direction=desc"><i class="fa fa-fw fa-sort"></i></a>
+            {% else %}
+            <a id href="?order_by=subject&direction=asc"><i class="fa fa-fw fa-sort"></i></a>
+            {% endif %}
+          </th>
+          <th>카테고리
+            <a href=""><i class="fa fa-fw fa-sort"></i></a>
+          </th>
+          <th>관련뉴스기사
+            {% if direction == 'asc' %}
+            <a id href="?order_by=news_title&direction=desc"><i class="fa fa-fw fa-sort"></i></a>
+            {% else %}
+            <a id href="?order_by=news_title&direction=asc"><i class="fa fa-fw fa-sort"></i></a>
+            {% endif %}
+          </th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+        {% for rescue in rescues %}
+        <tr>
+          <td class="center">{{ rescue.area }}</td>
+          <td class="center">{{ rescue.case_num }}</td>
+          <td class="center">{{ rescue.company_name }}</td>
+          <td class="sm-col">{{ rescue.date }}</td>
+          {% if rescue.contents == 'nan' %}
+          <td>{{ rescue.subject }}</td>
+          {% else %}
+          <td><a href="/information/rescue_detail/{{ rescue.id }}">{{ rescue.subject }}</a></td>
+          {% endif %}
+          <td>{{ rescue.category }}</td>
+          {% if rescue.news_url == 'None' %}
+          <td>{{ rescue.news_title }}</td>
+          {% elif 'https://help.naver.com/support/' in rescue.news_url %}
+          <td>{{ rescue.news_title }}</td>
+          {% else %}
+          <td><a href="{{ rescue.news_url }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ rescue.news_title }}</a></td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row mt-2">
+  <div class="col-12">
+    <nav>
+      <ul class="pagination justify-content-center">
+        {% if rescues.has_previous %}
+        <li class="page-item">
+          {% if order_by != None %}
+          <a class="page-link" href="?p=1&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">처음으로</a>
+          {% else %}
+          <a class="page-link" href="?p=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">처음으로</a>
+          {% endif %}
+        </li>
+        <li class="page-item">
+          {% if order_by != None %}
+          <a class="page-link" href="?p={{ rescues.previous_page_number }}&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">이전으로</a>
+          {% else %}
+          <a class="page-link" href="?p={{ rescues.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">이전으로</a>
+          {% endif %}
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link " href="#">처음으로</a>
+        </li>
+        <li class="page-item disabled">
+          <a class="page-link" href="#">이전으로</a>
+        </li>
+        {% endif %}
+
+        <!-- <li class="page-item active">
+          <a class="page-link" href="#">{{ rescues.number }} / {{ rescues.paginator.num_pages }}</a>
+        </li>
+         -->
+        
+        {% if rescues.number > 2 %} 
+          {% if order_by != None %}
+            <li><a class="page-link" href="?p={{ 1 }}&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"> 1 </a></li>
+          {% else %}
+            <li><a class="page-link" href="?p={{ 1 }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"> 1 </a></li>
+          {% endif %}
+        <li class="page-link"><span>...<span class="sr-only">...</span></span></li> 
+        {% endif %}
+        
+        {% for i in page_range %} 
+        {% if rescues.number == i %} 
+        <li class="page-link" class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li> 
+        {% else %} 
+          {% if order_by != None %}
+            <li class="page-item active"><a class="page-link" href="?p={{ i }}&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ i }}</a></li> 
+          {% else %} 
+            <li class="page-item active"><a class="page-link" href="?p={{ i }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ i }}</a></li> 
+          {% endif %}
+        {% endif %} 
+        {% endfor %} 
+
+        {% if rescues.number < max_index %} 
+        <li class="page-link"><span>...<span class="sr-only">...</span></span></li> 
+          {% if order_by != None %}
+            <li><a class="page-link" href="?page={{ max_index|add:'2' }}&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ max_index|add:"2" }}</a></li> 
+          {% else %}
+            <li><a class="page-link" href="?page={{ max_index|add:'2' }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ max_index|add:"2" }}</a></li> 
+          {% endif %}
+        {% endif %}
+
+        {% if rescues.has_next %}
+        <li class="page-item">
+          {% if order_by != None %}
+          <a class="page-link" href="?p={{ rescues.next_page_number }}&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">다음으로</a>
+          {% else %}
+          <a class="page-link" href="?p={{ rescues.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">다음으로</a>
+          {% endif %}
+        </li>
+        <li class="page-item">
+          {% if order_by != None %}
+          <a class="page-link" href="?p={{ rescues.paginator.num_pages }}&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">마지막으로</a>
+          {% else %}
+          <a class="page-link" href="?p={{ rescues.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">마지막으로</a>
+          {% endif %}
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link disabled" href="#">다음으로</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" href="#">마지막으로</a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+{% endblock %}

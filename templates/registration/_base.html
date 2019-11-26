@@ -1,0 +1,16 @@
+{% extends "../index.html" %}
+{% load static from staticfiles %}    
+{% block css %}
+<link href="{% static 'css/login.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <h1>{% block title %} {% endblock %}</h1>
+    </div>
+</div>
+{% block accounts %}
+
+{% endblock %}
+{% endblock %}

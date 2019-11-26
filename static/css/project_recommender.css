@@ -1,0 +1,21 @@
+.flex-table > .seach-form{
+    width: 25%;
+    display: inline-flex;
+    padding: 10px;
+    float: right;
+}
+
+.flex-table > .recomend_div{
+    width: 96%;
+    height: 35rem;
+}
+
+.recomend_div > span {
+    margin-top: 300px;
+}
+
+.recomend_div > .category{
+    margin-top: 30px;
+    margin-left: 50px;
+    font-size: 20px;
+}

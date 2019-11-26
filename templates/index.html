@@ -1,0 +1,155 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Invest Infomamtion</title>
+  <!-- favicon -->
+  <link rel="icon" href="{% static 'img/sunbo.ico' %}" type="image/x-icon">
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/simple-line-icons/css/simple-line-icons.css' %}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+  {% block css %}
+
+  {% endblock %}
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/"><img src="{% static 'img/logo.png' %}" width="70px" height="70px">
+      &nbsp; investment information system</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/about/">회사소개</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">기업정보</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/information/rescue_list/">회생법인 신청리스트</a>
+            <a class="dropdown-item" href="/information/dart_list/">DART</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">News</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/news/lp_company/">LP기업</a>
+            <a class="dropdown-item" href="/news/portfolio/">포트폴리오</a>
+            <a class="dropdown-item" href="/news/investment_news/">투자유치</a>
+            <a class="dropdown-item" href="/news/professor/">교수개발</a>
+            <a class="dropdown-item" href="/news/main_company/">관계사</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/dealflowbox/deal_list/">Deal Flow Box</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle"
+            data-toggle="dropdown"
+            href="#" role="button"
+            aria-haspopup="true"
+            aria-expanded="false">
+            추천시스템 &nbsp;
+            <small><i>beta</i></small>
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/project/introduction">소개</a>
+            <a class="dropdown-item" href="/project/network">스타트업 네트워크</a>
+            <a class="dropdown-item" href="/project/recommender">추천시스템</a>
+          </div>
+        </li>
+      </ul>
+      <div>
+        {% if request.user.is_authenticated %}
+        {% if request.user.is_superuser %}
+          <button type="submit" class="btn btn-signup" onclick="location.href='/admin'">관리자 페이지</button>&nbsp;&nbsp;
+        {% else %}
+        {% endif %}
+        <a class="btn btn-primary" href="/accounts/logout">로그아웃</a>
+        {% else %}
+        <a class="btn btn-primary" href="/accounts/login">로그인</a>
+        <a class="btn btn-signup" href="/accounts/register">회원가입</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  {% block content %}
+
+  {% endblock %}
+
+  <!-- Footer -->
+  <footer class="footer bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+          <ul class="list-inline mb-2">
+            <li class="list-inline-item">
+              <a href="/about">회사소개</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="/about">Contact</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="#">Terms of Use</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="#">Privacy Policy</a>
+            </li>
+          </ul>
+          <p class="text-muted small mb-4 mb-lg-0">&copy; sunbo angel partners 2019. All Rights Reserved.</p>
+        </div>
+        <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
+          <ul class="list-inline mb-0">
+            <li class="list-inline-item mr-3">
+              <a href="https://www.facebook.com/pg/sunbonpartners/posts/">
+                <i class="fab fa-facebook fa-2x fa-fw"></i>
+              </a>
+            </li>
+            <li class="list-inline-item mr-3">
+              <a href="#">
+                <i class="fab fa-instagram fa-2x fa-fw"></i>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="#">
+                <i class="fab fa-github fa-2x fa-fw"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  {% block js %}
+
+  {% endblock %}
+</body>
+
+</html>

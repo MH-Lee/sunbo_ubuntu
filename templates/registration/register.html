@@ -1,0 +1,26 @@
+{% extends "registration/_base.html" %}
+
+{% block title %}회원가입{% endblock %}
+
+{% block accounts %}
+<div class="container-login">
+    <div class="row d-flex justify-content-center">
+        <div class="col-lg-4">
+            <form action="" method="POST">
+                {% for field in user_form %}
+                <div class="form-group">
+                    <label for="{{ field.id.for_label }}">{{ field.label }}</label>
+                    <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id.for_label }}"
+                    placeholder="{{ field.label }}" name="{{ field.name }}">
+                </div>
+                {% endfor %}
+                {% if user_form.errors %}
+                <p style="color:red">비밀번호가 일치하지 않습니다.</p>
+                {% endif %}
+                {% csrf_token %}
+                <input class="btn btn-primary" type="submit" value="submit">
+            </form>
+        </div>   
+    </div>
+</div>
+{% endblock %}

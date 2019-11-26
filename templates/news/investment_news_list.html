@@ -1,0 +1,114 @@
+{% extends "news/_base.html" %}
+{% block title %}투자뉴스{% endblock %}
+{% block search %}
+<form class="form-inline my-2 my-lg-0 justify-content-end"  method="GET" action="{% url 'investment_news' %}">
+  {% csrf_token %}
+  <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search">
+  <button class="btn btn-primary" type="submit">search</button>
+</form>
+{% endblock %}
+{% block table %}
+<div class="row mt-5">
+  <div class="investnews-table">
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th class="center">신문사
+            {% if direction == 'asc' %}
+            <a id href="?order_by=media&direction=desc"><i class="fa fa-fw fa-sort"></i></a>
+            {% else %}
+            <a id href="?order_by=media&direction=asc"><i class="fa fa-fw fa-sort"></i></a>
+            {% endif %}
+          </th>
+          <th>뉴스제목
+            {% if direction == 'asc' %}
+              <a id href="?order_by=news_title&direction=desc"><i class="fa fa-fw fa-sort"></i></a>
+            {% else %}
+              <a id href="?order_by=news_title&direction=asc"><i class="fa fa-fw fa-sort"></i></a>
+            {% endif %}
+          </th>
+          <th class="sm-col">날짜
+            {% if direction == 'asc' %}
+            <a id href="?order_by=date&direction=desc"><i class="fa fa-fw fa-sort"></i></a>
+            {% else %}
+            <a id href="?order_by=date&direction=asc"><i class="fa fa-fw fa-sort"></i></a>
+            {% endif %}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for inv in investment_info %}
+        <tr>
+          <td class="center">{{ inv.media }}</td>
+          {% if inv.news_url == 'None' %}
+          <td>{{ inv.news_title }}</td>
+          {% elif 'https://help.naver.com/support/' in inv.news_url %}
+          <td>{{ inv.news_title }}</td>
+          {% else %}
+          <td><a href="{{ inv.news_url }}">{{ inv.news_title }}</a></td>
+          {% endif %}
+          <td class="sm-col">{{ inv.date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row mt-2">
+  <div class="col-12">
+    <nav>
+      <ul class="pagination justify-content-center">
+        {% if investment_info.has_previous %}
+        <li class="page-item">
+          {% if order_by != None %}
+          <a class="page-link" href="?p=1&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">처음으로</a>
+          {% else %}
+          <a class="page-link" href="?p=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">처음으로</a>
+          {% endif %}
+        </li>
+        <li class="page-item">
+          {% if order_by != None %}
+          <a class="page-link" href="?p={{ investment_info.previous_page_number }}&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">이전으로</a>
+          {% else %}
+          <a class="page-link" href="?p={{ investment_info.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">이전으로</a>
+          {% endif %}
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link " href="#">처음으로</a>
+        </li>
+        <li class="page-item disabled">
+          <a class="page-link" href="#">이전으로</a>
+        </li>
+        {% endif %}
+        <li class="page-item active">
+          <a class="page-link" href="#">{{ investment_info.number }} / {{ investment_info.paginator.num_pages }}</a>
+        </li>
+        {% if investment_info.has_next %}
+        <li class="page-item">
+          {% if order_by != None %}
+          <a class="page-link" href="?p={{ investment_info.next_page_number }}&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">다음으로</a>
+          {% else %}
+          <a class="page-link" href="?p={{ investment_info.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">다음으로</a>
+          {% endif %}
+        </li>
+        <li class="page-item">
+          {% if order_by != None %}
+          <a class="page-link" href="?p={{ investment_info.paginator.num_pages }}&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">마지막으로</a>
+          {% else %}
+          <a class="page-link" href="?p={{ investment_info.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">마지막으로</a>
+          {% endif %}
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link disabled" href="#">다음으로</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" href="#">마지막으로</a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+{% endblock %}

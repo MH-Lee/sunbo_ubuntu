@@ -1,0 +1,10 @@
+.flex-container-1 header.masthead{
+  /* background-color: aqua; */
+  position: relative;
+  background-color: #343a40;
+  background: url("../img/information_img.jpg") no-repeat center center;
+  background-size: auto;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+  z-index: 1;
+}

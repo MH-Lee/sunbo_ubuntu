@@ -1,0 +1,95 @@
+{% extends "project/_base.html" %}
+{% load static from staticfiles %}
+{% block subcss %}
+<link href="{% static 'css/project_recommender.css' %}" rel="stylesheet">
+{% endblock %}
+{% block title %}스타트업 추천시스템 <small><i>beta</i></small>{% endblock %}
+{% block subcontent %}
+<div class="seach-form">
+    <input class="form-control mr-sm-2"  id="recommendSearh" name="recommender-q" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-primary" id="recommendBtn" type="submit">search</button>
+</div>
+
+<!-- id = "recommendTable" -->
+<div class="recomend_div">
+    <div class='category'>
+        <strong>category:&nbsp;&nbsp;</strong>
+        <span id="company-cat"></span>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Company</th>
+                <th scope="col">Weight</th>
+            </tr>
+        </thead>
+        <tbody id = "recommendTable">
+    
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block js %}
+{% csrf_token %}
+<script type="text/javascript">
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+    $(document).ready(function(){
+        $("#recommendBtn").click(function(){
+            var getVal = $("#recommendSearh").val();
+            
+            var target = {
+                'target':getVal
+            };
+            console.log(csrftoken);
+            console.log(target);
+            $("#recommendTable").load(window.location + " #recommendTable");
+            $.ajax({
+                url: "{% url 'recommender-api' %}",
+                type: "post",
+                data: target,
+                success: function (json) {
+                    console.log(json)
+                    var response = json.result
+                    var category = json.category.toString();
+                    $("#company-cat").html(category)
+                    $.each(response, function(i, item) {
+                        var tblRow  = $('<tr>').append(
+                            $('<td>').css({'scope':'row', 'text-align': 'center'}).text(i+1),
+                            $('<td>').css('text-align','center').text(item.company),
+                            $('<td>').css('text-align','center').text(Math.round(item.weight*100)/100)
+                        );
+                        $(tblRow).appendTo("#recommendTable");
+                        // console.log($tr.wrap('<p>').html());
+                    });
+                },
+                error:function(request,status,error){
+                    $("p").html("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                    // alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            });
+        });
+    });
+</script>
+
+
+<!-- $.getJSON(json, function(data) {
+    $.each(data.entries, function(i, f) {
+    var tblRow = "<tr>" + "<td>" + i + "</td>" + "<td>" + f.company + "</td>" + "<td>" + f.weight + "</td>" + "</tr>"
+    $(tblRow).appendTo("#recommendTable");
+    });
+}); -->
+{% endblock %}

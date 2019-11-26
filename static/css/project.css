@@ -1,0 +1,14 @@
+.flex-container-1 header.masthead{
+    /* background-color: aqua; */
+    position: relative;
+    background-color: #343a40;
+    background: url("../img/network_project2.jpg") no-repeat center center;
+    background-size: auto;
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+    z-index: 1;
+  }
+
+  .flex-container-1 > header > .container > div > div > h1 {
+    color: rgba(39, 34, 34, 0.863);
+  }

@@ -1,0 +1,9 @@
+body {
+    width: 100%;
+}
+
+#networkDiv {
+    max-width: 1800px;
+    margin: 0 auto;
+    height: 1300px;
+  }

@@ -1,0 +1,94 @@
+  p {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    }
+  
+  .navbar {
+    border-bottom: 1px #ffffff;
+  }
+  .subtitle {
+    margin-left: 13rem;
+    margin-right: 13rem;
+    margin-top: 7rem;
+    border-bottom: 1px solid #e3e3e3;
+  }
+
+  .company-name img{
+    margin-top: 3rem;
+    margin-left: 13rem;
+    width: 25rem;
+    height: 9rem;
+  }
+  .no-gutters {
+    margin-top: 3rem;
+    margin-right: 25rem;
+    margin-left: 25rem;
+   }
+
+  .showcase .showcase-text {
+    padding: 3rem;
+   }
+  .map {
+    margin-top: 5rem;
+  }
+  .map .col-md-6 img {
+    margin-top: 3rem;
+    width: 100%;
+  }
+  .showcase .showcase-img {
+    /* min-height: 30rem; */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center
+  }
+  .no-gutters {
+      margin-right: 7rem;
+      margin-left: 7rem;
+     }
+  .showcase .showcase-text {
+    padding: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    .subtitle {
+      margin-left: 3rem;
+      margin-right: 3rem;
+      margin-top: 5rem;
+      border-bottom: 1px solid #e3e3e3;
+    }  
+    .showcase .showcase-img {
+      min-height: 20rem;
+    }
+    .company-name img{
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+      margin-left: 2rem;
+      width: 50%;
+      /* height: 30%; */
+    }
+    .showcase .showcase-text {
+      padding: 7px;
+    }
+    .showcase h2 {
+      font-size: 15pt;
+    }
+    .showcase p {
+      font-size: 10pt;
+    }
+    .map {
+      margin-top: 3rem;
+    }
+    .map .col-md-6 img {
+      margin-top: 3rem;
+      width: 100%;
+    }
+    .no-gutters {
+      margin-top: 1rem;
+      margin-right: 2rem;
+      margin-left: 2rem;
+      font-size: 30rem;
+     }
+  }
+  .col-lg-4 .features-icons-item {
+    width: 80%;
+  }

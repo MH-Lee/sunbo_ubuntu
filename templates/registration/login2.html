@@ -1,0 +1,32 @@
+{% extends "../index.html" %}
+{% load static from staticfiles %}    
+{% block css %}
+<link href="{% static 'css/login.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <h1>로그인</h1>
+    </div>
+</div>
+<div class="row d-flex justify-content-center">
+    <div class="col-lg-4">
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id.for_label }}">{{ field.label }}</label>
+                    <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id.for_label }}"
+                    placeholder="{{ field.label }}" name="{{ field.name }}">
+                </div>
+           
+            {% endfor %}
+            {% if form.errors %}
+            <p style="color:red">ID나 비밀번호가 일치하지 않습니다.</p>
+            {% endif %}
+            <button type="submit" class="btn btn-primary">로그인</button>
+            <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+        </form>
+    </div>   
+</div>
+{% endblock %}

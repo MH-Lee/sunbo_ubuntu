@@ -1,0 +1,58 @@
+{% extends "../index.html" %}
+{% load static from staticfiles %}    
+{% block css %}
+<link href="{% static 'css/tables.css' %}" rel="stylesheet">
+<link href="{% static 'css/tables_news.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+<div class="flex-container-1">
+    <header class="masthead text-white text-center">
+        <div class="overlay"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-9 mx-auto">
+                        <h1 class="mb-5">스타트업 뉴스 정보</h1>
+                    </div>
+                </div>
+            </div>
+    </header>
+</div>
+
+<div class='flex-container-2'>
+
+    <div class="flex-nav">
+        <div class="side-menu-name">
+            <h4>NEWS</h4>
+        </div>
+        <div class="menu-nav">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="/news/lp_company/">LP기업</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/news/portfolio/">포트폴리오</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/news/investment_news/">투자유치</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/news/professor/">교수개발</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/news/main_company/">관계사</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="flex-table">
+        <div class="subtitle">
+            <h1>{% block title %}{% endblock %}</h1>
+            {% block search %}{% endblock %}
+        </div>
+        {% block table %}
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}

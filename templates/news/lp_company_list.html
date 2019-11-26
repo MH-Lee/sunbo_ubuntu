@@ -1,0 +1,135 @@
+{% extends "news/_base.html" %}
+{% block title %}LP 기업 뉴스 &nbsp;
+{% if request.user.is_superuser %}
+  <button type="submit" class="btn btn-primary" onclick="location.href='/news/company_update'">업데이트</button>
+{% else %}
+{% endif %}
+{% endblock %}
+{% block search %}
+<form class="form-inline my-2 my-lg-0 justify-content-end"  method="GET" action="{% url 'lp_company' %}">
+  {% csrf_token %}
+  <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search">
+  <button class="btn btn-primary" type="submit">search</button>
+</form>
+{% endblock %}
+{% block table %}
+<div class="row mt-5">
+  <div>
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th class="center">회사명
+            {% if direction == 'asc' %}
+            <a href="?order_by=company_name&direction=desc"><i class="fa fa-fw fa-sort"></i></a>
+            {% else %}
+            <a href="?order_by=company_name&direction=asc"><i class="fa fa-fw fa-sort"></i></a>
+            {% endif %}
+          </th>
+          <th class="center">신문사
+            {% if direction == 'asc' %}
+            <a href="?order_by=media&direction=desc"><i class="fa fa-fw fa-sort"></i></a>
+            {% else %}
+            <a href="?order_by=media&direction=asc"><i class="fa fa-fw fa-sort"></i></a>
+            {% endif %}
+          </th>
+          <th>뉴스제목
+            {% if direction == 'asc' %}
+            <a href="?order_by=news_title&direction=desc"><i class="fa fa-fw fa-sort"></i></a>
+            {% else %}
+            <a href="?order_by=news_title&direction=asc"><i class="fa fa-fw fa-sort"></i></a>
+            {% endif %}
+          </th>
+          <th class="sm-col">날짜
+            {% if direction == 'asc' %}
+            <a href="?order_by=date&direction=desc"><i class="fa fa-fw fa-sort"></i></a>
+            {% else %}
+            <a href="?order_by=date&direction=asc"><i class="fa fa-fw fa-sort"></i></a>
+            {% endif %}
+          </th>
+          <th class="center">카테고리
+            <a href=""><i class="fa fa-fw fa-sort"></i></a>
+          </th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+        {% for lpc in lp_company_info %}
+        <tr>
+          <td class="center">{{ lpc.company_name }}</td>
+          <td class="center">{{ lpc.media }}</td>
+          {% if lpc.news_url == 'None' %}
+          <td>{{ lpc.news_title }}</td>
+          {% elif 'https://help.naver.com/support/' in lpc.news_url %}
+          <td>{{ lpc.news_title }}</td>
+          {% else %}
+          <td><a href="{{ lpc.news_url }}">{{ lpc.news_title }}</a></td>
+          {% endif %}
+          <td class="sm-col">{{ lpc.date }}</td>
+          <td class="center">{{ lpc.category }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row mt-2">
+  <div class="col-12">
+    <nav>
+      {% if order_by != None %}
+          &order_by={{ order_by }}&direction={{ direction }}
+      {% else %}
+      {% endif %}
+      <ul class="pagination justify-content-center">
+        {% if lp_company_info.has_previous %}
+        <li class="page-item">
+          {% if order_by != None %}
+          <a class="page-link" href="?p=1&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">처음으로</a>
+          {% else %}
+          <a class="page-link" href="?p=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">처음으로</a>
+          {% endif %}
+        </li>
+        <li class="page-item">
+          {% if order_by != None %}
+          <a class="page-link" href="?p={{ lp_company_info.previous_page_number }}&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">이전으로</a> 
+          {% else %}
+          <a class="page-link" href="?p={{ lp_company_info.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">이전으로</a>
+          {% endif %}
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link " href="#">처음으로</a>
+        </li>
+        <li class="page-item disabled">
+          <a class="page-link" href="#">이전으로</a>
+        </li>
+        {% endif %}
+        <li class="page-item active">
+          <a class="page-link" href="#">{{ lp_company_info.number }} / {{ lp_company_info.paginator.num_pages }}</a>
+        </li>
+        {% if lp_company_info.has_next %}
+        <li class="page-item">
+          {% if order_by != None %}
+          <a class="page-link" href="?p={{ lp_company_info.next_page_number }}&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">다음으로</a>
+          {% else %}
+          <a class="page-link" href="?p={{ lp_company_info.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">다음으로</a>
+          {% endif %}
+        </li>
+        <li class="page-item">
+          {% if order_by != None %}
+          <a class="page-link" href="?p={{ lp_company_info.paginator.num_pages }}&order_by={{ order_by }}&direction={{ direction }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">마지막으로</a>
+          {% else %}
+          <a class="page-link" href="?p={{ lp_company_info.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">마지막으로</a>
+          {% endif %}
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link disabled" href="#">다음으로</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" href="#">마지막으로</a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+{% endblock %}

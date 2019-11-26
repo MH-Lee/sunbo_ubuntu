@@ -1,0 +1,81 @@
+{% extends "project/_base.html" %}
+{% load static from staticfiles %}  
+{% block subcss %}
+<link href="{% static 'css/network.css' %}" rel="stylesheet">
+{% endblock %}
+{% block title %}스타트업 네트워크{% endblock %}
+{% block subcontent %}
+<!-- <iframe 
+src="{% url 'startup' %}" 
+name="targetframe" 
+allowTransparency="true" 
+scrolling="no" 
+frameborder="0" 
+style="height:1000px;width:2000px"
+></iframe> -->
+<div id="networkDiv", class="network-container"></div>
+{% endblock %}
+{% block js %}
+<script src="https://code.highcharts.com/highcharts.src.js"></script>
+<script src="https://code.highcharts.com/modules/networkgraph.js"></script>
+<script type="text/javascript">
+
+var data  = "{{ data|safe }}";
+// console.log(eval(data));
+var node_array = new Array();   
+var node_data = eval(data)[0].node_data
+// console.log(node_data);
+for (i = 0; i < node_data.length; i++){
+    var node = {
+        id: node_data[i].Title,
+        marker: {
+            radius: Math.round(node_data[i].nodesize*100)/1500,
+        },
+        color: node_data[i].color
+    }
+    node_array.push(node);
+}
+
+var edge_array = eval(data)[0].edge_data
+
+Highcharts.chart('networkDiv', {
+
+    chart: {
+        type: 'networkgraph',
+        marginTop: 80,
+        height: '100%'
+    },
+
+    title: {
+        text: 'Start-up Network'
+    },
+
+    plotOptions: {
+        networkgraph: {
+            keys: ['from', 'to'],
+            layoutAlgorithm: {
+                enableSimulation: false,
+                integration: 'verlet',
+                linkLength: 100,
+                initialPositions: 'circle'   
+            }
+        }
+    },
+
+    series: [{
+        marker: {
+            radius: 20,
+            linewidth:10
+        },
+        dataLabels: {
+            enabled: true,
+            linkFormat: '',
+            allowOverlap: true
+        },
+        data: edge_array,
+        nodes: node_array
+        }]
+    });
+
+</script>
+{% endblock %}
