@@ -40,6 +40,7 @@ class RescueAPIView(generics.ListAPIView):
         queryset = Rescue.objects.all().order_by('-date')
         date_by = self.request.GET.get('date')
         start_date_by = self.request.GET.get('start_date')
+        end_date_by = self.request.GET.get('end_date')
         case_num_by = self.request.GET.get('case_num')
         name_by = self.request.GET.get('company_name')
         address_by = self.request.GET.get('address')
@@ -48,6 +49,8 @@ class RescueAPIView(generics.ListAPIView):
             queryset = queryset.filter(date=date_by)
         if start_date_by:
             queryset = queryset.filter(date__gte=start_date_by)
+        if end_date_by:
+            queryset = queryset.filter(date__lte=end_date_by)
         if case_num_by:
             queryset = queryset.filter(case_num=case_num_by)
         if name_by:
