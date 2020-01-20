@@ -250,11 +250,11 @@ def recommender_send():
 
 if __name__ == "__main__":
     print(os.getcwd())
-    dart_send()
-    invest_news_send()
-    LP_company_send()
-    main_company_send()
-    portfolio_send()
-    prof_send()
+    # dart_send()
+    # invest_news_send()
+    # LP_company_send()
+    # main_company_send()
+    # portfolio_send()
+    # prof_send()
     recommender_send()
     # rescue_send()
