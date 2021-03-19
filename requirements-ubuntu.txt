@@ -15,7 +15,7 @@ certbot-nginx==0.31.0
 Django==2.2.7
 django-celery-beat==1.5.0
 django-celery-results==1.1.2
-djangorestframework==3.10.3
+djangorestframework==3.11.2
 docutils==0.15.2
 feedfinder2==0.0.4
 feedparser==5.2.1
